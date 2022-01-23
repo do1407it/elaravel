@@ -1,0 +1,65 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; // use DB;
+use Illuminate\Support\Facades\Session; // use Session;
+
+use App\Http\Requests;
+use Illuminate\Support\Facades\Redirect;
+session_start();
+
+
+
+class AdminController extends Controller
+{   
+    public function AuthLogin(){
+        $admin_id = Session::get('admin_id');
+        if($admin_id){
+            return Redirect::to('/dashboard');
+        }else{
+            return Redirect::to('/admin')->send();
+        }
+    }
+    // [GET] /admin
+    public function index(){
+        return view('admin-login');
+    }
+    // [GET] /dashboard
+    public function show(){
+        $this->AuthLogin();
+        return view('admin.dashboard');
+    }
+
+    // [POST] /dashboard
+    public function dashboard(Request $request){
+        $admin_email    =     $request -> admin_email;
+        $admin_password = md5($request -> admin_password);
+        // Lấy table tb_admin -> Kiểm tra email -> kiểm tra password -> Lấy giới hạn 1 user
+        $result = DB::table('tbl_admin') -> where('admin_email', $admin_email) -> where('admin_password', $admin_password) -> first();
+        // echo '<pre>';
+        // print_r($result);    
+        // echo '</pre>';
+        if($result){
+            Session::put('admin_name', $result -> admin_name);
+            Session::put('admin_id', $result -> admin_id);
+            return Redirect::to('/dashboard');
+        }else{
+            Session::put('message','Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
+            return Redirect::to('/admin');
+        }
+
+        // return view('admin.dashboard');
+    }
+
+    // [GET] /logout -> /admin
+    public function logout(){
+        $this->AuthLogin();
+        Session::put('admin_name', null);
+        Session::put('admin_id', null);
+        return Redirect::to('/admin');
+    }
+    
+    
+}
