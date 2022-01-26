@@ -9,6 +9,7 @@
         "barryvdh/laravel-debugbar": "^3.6",
         "bumbummen99/shoppingcart": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
+        "google/recaptcha": "^1.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",

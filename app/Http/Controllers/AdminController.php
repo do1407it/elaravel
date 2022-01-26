@@ -12,6 +12,8 @@ use App\Models\Login;
 use App\Models\Social;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Auth;
+use App\Rules\Captcha;
+
 session_start();
 
 
@@ -128,7 +130,7 @@ class AdminController extends Controller
             return Redirect::to('/admin')->send();
         }
     }
-    
+
     // [GET] /admin
     public function index()
     {
@@ -144,37 +146,43 @@ class AdminController extends Controller
     // [POST] /dashboard
     public function dashboard(Request $request)
     {
-        $data = $request->all();
-        $admin_email    = $data['admin_email'];
-        $admin_password = md5($data['admin_password']);
-        $login = Login::where('admin_email', $admin_email)->where('admin_password', $admin_password)->first();
-        $login_count = $login->count();
-        if ($login_count) {
-            Session::put('admin_name', $login->admin_name);
-            Session::put('admin_id', $login->admin_id);
-            return Redirect::to('/dashboard');
-        } else {
-            Session::put('message', 'Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
-            return Redirect::to('/admin');
-        }
+        $data = $request->validate([
+            'admin_email' => 'required',
+            'admin_password' => 'required',
+            'g-recaptcha-response' => new Captcha(), //dòng kiểm tra Captcha
+        ]);
 
-        // $admin_email    =     $request -> admin_email;
-        // $admin_password = md5($request -> admin_password);
-        // // Lấy table tb_admin -> Kiểm tra email -> kiểm tra password -> Lấy giới hạn 1 user
-        // $result = DB::table('tbl_admin') -> where('admin_email', $admin_email) -> where('admin_password', $admin_password) -> first();
-        // // echo '<pre>';
-        // // print_r($result);    
-        // // echo '</pre>';
-        // if($result){
-        //     Session::put('admin_name', $result -> admin_name);
-        //     Session::put('admin_id', $result -> admin_id);
+        // $data = $request->all();
+        // $admin_email    = $data['admin_email'];
+        // $admin_password = md5($data['admin_password']);
+        // $login = Login::where('admin_email', $admin_email)->where('admin_password', $admin_password)->first();
+        // $login_count = $login->count();
+        // if ($login_count) {
+        //     Session::put('admin_name', $login->admin_name);
+        //     Session::put('admin_id', $login->admin_id);
         //     return Redirect::to('/dashboard');
-        // }else{
-        //     Session::put('message','Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
+        // } else {
+        //     Session::put('message', 'Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
         //     return Redirect::to('/admin');
         // }
 
-        // return view('admin.dashboard');
+        $admin_email    =     $request -> admin_email;
+        $admin_password = md5($request -> admin_password);
+        // Lấy table tb_admin -> Kiểm tra email -> kiểm tra password -> Lấy giới hạn 1 user
+        $result = DB::table('tbl_admin') -> where('admin_email', $admin_email) -> where('admin_password', $admin_password) -> first();
+        // echo '<pre>';
+        // print_r($result);    
+        // echo '</pre>';
+        if($result){
+            Session::put('admin_name', $result -> admin_name);
+            Session::put('admin_id', $result -> admin_id);
+            return Redirect::to('/dashboard');
+        }else{
+            Session::put('message','Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
+            return Redirect::to('/admin');
+        }
+
+        return view('admin.dashboard');
     }
 
     // [GET] /logout -> /admin

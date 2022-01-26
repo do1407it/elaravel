@@ -71,6 +71,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             ?>
             <form action="{{URL::to('/admin-dashboard')}}" method="post">
                 {{csrf_field()}}
+                @foreach ($errors -> all() as $error)
+                <ul>
+                    <li>
+                        {{$error}}
+                    </li>
+                </ul>
+                @endforeach
+
                 <!-- tạo file input value -->
                 <input type="text" class="ggg" name="admin_email" placeholder="Điền email" required="">
                 <input type="password" class="ggg" name="admin_password" placeholder="Điền PASSWORD" required="">
@@ -78,6 +86,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <h6><a href="#">Quên mật khẩu</a></h6>
                 <div class="clearfix"></div>
                 <input type="submit" value="Đăng nhập" name="login">
+                <!-- Captcha -->
+                <div class="g-recaptcha" data-sitekey="{{env('CAPTCHA_KEY')}}"></div>
+                <br />
+                @if($errors->has('g-recaptcha-response'))
+                <span class="invalid-feedback" style="display:none">
+                    <strong>{{$errors->first('g-recaptcha-response')}}</strong>
+                </span>
+                @endif
+                <!-- end Captcha -->
             </form>
             <p>Bạn đã có tài khoản chưa?<a href="registration.html">Tạo tài khoản</a></p>
             <a href="{{URL::to('/login-facebook')}}" class="login_facebook"><i class="fab fa-facebook-f"></i>Facebook</a>
@@ -91,6 +108,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script src="{{asset('public/backend/js/jquery.nicescroll.js')}}"></script>
     <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
     <script src="{{asset('public/backend/js/jquery.scrollTo.js')}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
         $(document).ready(function() {
             $('#myTable').DataTable();

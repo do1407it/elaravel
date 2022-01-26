@@ -633,6 +633,7 @@ a#scrollUp {
     <script src="{{asset('public/fontend/js/price-range.js')}}"></script>
     <script src="{{asset('public/fontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/fontend/js/main.js')}}"></script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0"
         nonce="MwJe4xwo"></script>
