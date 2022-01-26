@@ -96,6 +96,15 @@ Route::get('/manage-order', [CheckoutController::class, 'manage_order']);
 Route::get('/view-order/{orderId}', [CheckoutController::class, 'view_order']);
 Route::get('/delete-order/{orderId}', [CheckoutController::class, 'delete_order']);
 
+//Login facebook
+Route::get('/login-facebook',[AdminController::class, 'login_facebook']);
+Route::get('/admin/callback',[AdminController::class, 'callback_facebook']);
+
+//Login  google
+Route::get('/login-google',[AdminController::class, 'login_google']);
+Route::get('/google/callback',[AdminController::class, 'callback_google']);
+
+
 
 
 

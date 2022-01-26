@@ -8,15 +8,22 @@ use Illuminate\Support\Facades\Session; // use Session;
 
 use App\Http\Requests;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Auth;
+
 session_start();
 
 class CategoryProduct extends Controller
 {
-    public function AuthLogin(){
-        $admin_id = Session::get('admin_id');
-        if($admin_id){
+    public function AuthLogin()
+    {
+        if (Session::get('login_normal')) {
+            $admin_id = Session::get('admin_id');
+        } else {
+            $admin_id = Auth::id();
+        }
+        if ($admin_id) {
             return Redirect::to('/dashboard');
-        }else{
+        } else {
             return Redirect::to('/admin')->send();
         }
     }
