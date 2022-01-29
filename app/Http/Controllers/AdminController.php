@@ -132,7 +132,7 @@ class AdminController extends Controller
     }
 
     // [GET] /admin
-    public function index()
+    public function index() 
     {
         return view('admin-login');
     }
@@ -182,7 +182,7 @@ class AdminController extends Controller
             return Redirect::to('/admin');
         }
 
-        return view('admin.dashboard');
+        return view('admin/dashboard');
     }
 
     // [GET] /logout -> /admin

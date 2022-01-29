@@ -27,11 +27,9 @@
 
     <title>Web bán hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/js/formValidation.min.js">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/js/formValidation.min.js">
+    <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css">
     <link href="{{asset('public/fontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/fontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/fontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -52,59 +50,59 @@
 </head>
 <!--/head-->
 <style>
-.header-middle {
-    background-color: #F9CBFF;
-}
+    .header-middle {
+        background-color: #F9CBFF;
+    }
 
-a#scrollUp {
-    background: #F9CBFF;
-}
+    a#scrollUp {
+        background: #F9CBFF;
+    }
 
-.shop-menu ul li a {
-    background: none;
-}
+    .shop-menu ul li a {
+        background: none;
+    }
 
-.panel-heading_link {
-    display: block;
-}
+    .panel-heading_link {
+        display: block;
+    }
 
-.panel-heading_link:hover {
-    opacity: 0.5;
-}
+    .panel-heading_link:hover {
+        opacity: 0.5;
+    }
 
-.shop-menu ul li a:hover {
-    color: #fe980f;
-    background: none;
-}
+    .shop-menu ul li a:hover {
+        color: #fe980f;
+        background: none;
+    }
 
-.header_top {
-    background-color: #ffde59;
-}
+    .header_top {
+        background-color: #ffde59;
+    }
 
-.header_top,
-.header-middle {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 999;
-}
+    .header_top,
+    .header-middle {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 999;
+    }
 
-.header-middle {
-    top: 37px;
-}
+    .header-middle {
+        top: 37px;
+    }
 
-#header {
-    margin-top: 125px;
-}
+    #header {
+        margin-top: 125px;
+    }
 
-.slider-selection {
-    background: none repeat scroll 0 0 #2a86aa;
-}
+    .slider-selection {
+        background: none repeat scroll 0 0 #2a86aa;
+    }
 </style>
 
 <body>
-    <?php 
+    <?php
     echo Session::get('customer_id');
     echo Session::get('shipping_id');
     ?>
@@ -146,8 +144,7 @@ a#scrollUp {
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="logo pull-left">
-                            <a href="/shopbanhang/trang-chu"><img src="{{URL::to('public/fontend/images/logo.png')}}"
-                                    alt="logo" style="width:170px;height:44px;"></a>
+                            <a href="/shopbanhang/trang-chu"><img src="{{URL::to('public/fontend/images/logo.png')}}" alt="logo" style="width:170px;height:44px;"></a>
                         </div>
                         <!-- <div class="btn-group pull-right">
                             <div class="btn-group">
@@ -181,42 +178,41 @@ a#scrollUp {
                                 <div id="fb-root"></div>
                                 <li><a href="#"><i class="fa fa-star"></i> Yêu thích</a></li>
                                 <?php
-                                    $customer_id = Session::get('customer_id');
-                                    $shipping_id = Session::get('shipping_id');
-                                    if($customer_id != NULL && $shipping_id == NULL){ 
+                                $customer_id = Session::get('customer_id');
+                                $shipping_id = Session::get('shipping_id');
+                                if ($customer_id != NULL && $shipping_id == NULL) {
                                 ?>
-                                <li><a href="{{URL::to('/checkout')}}"><i class="fas fa-money-bill-wave"></i> Thanh
-                                        toán</a></li>
+                                    <li><a href="{{URL::to('/checkout')}}"><i class="fas fa-money-bill-wave"></i> Thanh
+                                            toán</a></li>
                                 <?php
-                                    }elseif($customer_id!=NULL && $shipping_id!=NULL){
+                                } elseif ($customer_id != NULL && $shipping_id != NULL) {
                                 ?>
-                                <li><a href="{{URL::to('/payment')}}"><i class="fas fa-money-bill-wave"></i> Thanh
-                                        toán</a></li>
-                                <?php 
-                                    }else{
-                                ?>
-                                <li><a href="{{URL::to('/login-checkout')}}"><i class="fas fa-money-bill-wave"></i>
-                                        Thanh toán</a></li>
+                                    <li><a href="{{URL::to('/payment')}}"><i class="fas fa-money-bill-wave"></i> Thanh
+                                            toán</a></li>
                                 <?php
-                                    }
+                                } else {
+                                ?>
+                                    <li><a href="{{URL::to('/login-checkout')}}"><i class="fas fa-money-bill-wave"></i>
+                                            Thanh toán</a></li>
+                                <?php
+                                }
                                 ?>
                                 <li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a>
                                 </li>
                                 <?php
-                                    $customer_id = Session::get('customer_id');
-                                    if($customer_id != NULL){ 
+                                $customer_id = Session::get('customer_id');
+                                if ($customer_id != NULL) {
                                 ?>
-                                <!-- <li><p style="margin-top: 9px;"><i class="fas fa-user"></i>{{Session::get('customer_name')}}</p></li> -->
-                                <li><a href="{{URL::to('/lien-he')}}"><i
-                                            class="fas fa-user"></i>{{Session::get('customer_name')}}</a></li>
-                                <li><a href="{{URL::to('/logout-checkout')}}"><i class="fas fa-sign-out-alt"></i> Đăng
-                                        xuất</a></li>
+                                    <!-- <li><p style="margin-top: 9px;"><i class="fas fa-user"></i>{{Session::get('customer_name')}}</p></li> -->
+                                    <li><a href="{{URL::to('/lien-he')}}"><i class="fas fa-user"></i>{{Session::get('customer_name')}}</a></li>
+                                    <li><a href="{{URL::to('/logout-checkout')}}"><i class="fas fa-sign-out-alt"></i> Đăng
+                                            xuất</a></li>
                                 <?php
-                                    }else{
+                                } else {
                                 ?>
-                                <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a>
-                                </li>
-                                <?php 
+                                    <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Đăng nhập</a>
+                                    </li>
+                                <?php
                                 }
                                 ?>
                             </ul>
@@ -233,8 +229,7 @@ a#scrollUp {
                 <div class="row">
                     <div class="col-sm-8">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                                data-target=".navbar-collapse">
+                            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                                 <span class="sr-only">Toggle navigation</span>
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -272,8 +267,7 @@ a#scrollUp {
                             <form action="{{URL::to('/tim-kiem')}}" method="POST">
                                 {{csrf_field()}}
                                 <input type="text" name="keywords_submit" placeholder="Tìm kiếm sản phẩm" />
-                                <input type="submit" name="search-item" class="btn btn-danger btn-sm" value="Tìm"
-                                    style="width:60px;">
+                                <input type="submit" name="search-item" class="btn btn-danger btn-sm" value="Tìm" style="width:60px;">
                             </form>
                         </div>
                     </div>
@@ -306,8 +300,7 @@ a#scrollUp {
                                     <button type="button" class="btn btn-default get">Thông tin</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="{{URL::to('public/fontend/images/macbook-m1.jpeg')}}"
-                                        style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
+                                    <img src="{{URL::to('public/fontend/images/macbook-m1.jpeg')}}" style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
                                     <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
                                 </div>
                             </div>
@@ -322,8 +315,7 @@ a#scrollUp {
                                     <button type="button" class="btn btn-default get">Thông tin</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="{{URL::to('public/fontend/images/assus.png')}}"
-                                        style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
+                                    <img src="{{URL::to('public/fontend/images/assus.png')}}" style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
                                     <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
                                 </div>
                             </div>
@@ -336,8 +328,7 @@ a#scrollUp {
                                     <button type="button" class="btn btn-default get">Thông tin</button>
                                 </div>
                                 <div class="col-sm-6">
-                                    <img src="{{URL::to('public/fontend/images/DELL.jpg')}}" alt="Slider"
-                                        style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
+                                    <img src="{{URL::to('public/fontend/images/DELL.jpg')}}" alt="Slider" style="width:490px;height:400px;" class="girl img-responsive" alt="Slider" />
                                     <!-- <img src="images/home/pricing.png" class="pricing" alt="" /> -->
                                 </div>
                             </div>
@@ -405,9 +396,7 @@ a#scrollUp {
                             @foreach($category as $key => $category)
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <h4 class="panel-title"><a
-                                            href="{{URL::to('/danh-muc-san-pham/'.$category->category_id)}}"
-                                            class="panel-heading_link">{{$category -> category_name}}</a></h4>
+                                    <h4 class="panel-title"><a href="{{URL::to('/danh-muc-san-pham/'.$category->category_id)}}" class="panel-heading_link">{{$category -> category_name}}</a></h4>
                                 </div>
                             </div>
                             @endforeach
@@ -421,8 +410,7 @@ a#scrollUp {
                                 <ul class="nav nav-pills nav-stacked">
                                     @foreach($brand as $key => $brand)
                                     <li>
-                                        <a href="{{URL::to('/thuong-hieu-san-pham/'.$brand->brand_id)}}"
-                                            class="panel-heading_link">
+                                        <a href="{{URL::to('/thuong-hieu-san-pham/'.$brand->brand_id)}}" class="panel-heading_link">
                                             <span class="pull-right"></span>{{$brand -> brand_name}}
                                         </a>
                                     </li>
@@ -466,8 +454,7 @@ a#scrollUp {
         <!--Footer-->
         <div class="footer-top">
             <div class="container">
-                <div class="fb-comments" data-href="http://fashiondv.xyz/shopbanhang"
-                data-colorscheme="dark" data-order-by="reverse_time" data-width="" data-numposts="5"></div>
+                <div class="fb-comments" data-href="http://fashiondv.xyz/shopbanhang" data-colorscheme="dark" data-order-by="reverse_time" data-width="" data-numposts="5"></div>
                 <div class="row">
                     <div class="col-sm-7">
                         <div class="companyinfo">
@@ -602,8 +589,7 @@ a#scrollUp {
                             <h2>Gửi email</h2>
                             <form action="#" class="searchform">
                                 <input type="text" placeholder="Điền email của bạn" />
-                                <button type="submit" class="btn btn-default"><i
-                                        class="fa fa-arrow-circle-o-right"></i></button>
+                                <button type="submit" class="btn btn-default"><i class="fa fa-arrow-circle-o-right"></i></button>
                                 <p>Get the most recent updates from <br />our site and be updated your self...</p>
                             </form>
                         </div>
@@ -616,8 +602,7 @@ a#scrollUp {
             <div class="container">
                 <div class="row">
                     <p class="pull-left">Copyright © 2013 Đô-Vinh Inc. All rights reserved.</p>
-                    <p class="pull-right">Designed by <span><a target="_blank"
-                                href="http://www.themeum.com">Themeum</a></span></p>
+                    <p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
                 </div>
             </div>
         </div>
@@ -634,11 +619,20 @@ a#scrollUp {
     <script src="{{asset('public/fontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/fontend/js/main.js')}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.add-to-cart').click(function() {
+                swal("Good job!", "Thêm giỏ hàng thành công", "success")
+            })
+        })
+    </script>
     <div id="fb-root"></div>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0"
-        nonce="MwJe4xwo"></script>
-    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0"
-        nonce="VUakjoL7"></script>
+
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0" nonce="MwJe4xwo"></script>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v12.0" nonce="VUakjoL7"></script>
+
+
 </body>
 
 </html>
