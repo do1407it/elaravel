@@ -73,9 +73,11 @@ Route::post('/update-product/{product_id}', [ProductController::class, 'update_p
 
 //Cart
 Route::post('/save-cart', [CartController::class, 'save_cart']);
+Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);
 Route::post('/update-cart-quantity', [CartController::class, 'update_cart_quantity']);
 
 Route::get('/show-cart', [CartController::class, 'show_cart']);
+Route::get('/gio-hang', [CartController::class, 'gio_hang']);
 Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart']);
 
 // CHECKOUT

@@ -18,13 +18,19 @@
         <div class="product-image-wrapper">
             <div class="single-products">
                 <div class="productinfo text-center">
-                    <form action="">
+                    <form>
+                        {{csrf_field()}}
+                        <input type="hidden" value="{{$product -> product_id}}" class="cart_product_id_{{$product -> product_id}}">
+                        <input type="hidden" value="{{$product -> product_name}}" class="cart_product_name_{{$product -> product_id}}">
+                        <input type="hidden" value="{{$product -> product_image}}" class="cart_product_image_{{$product -> product_id}}">
+                        <input type="hidden" value="{{$product -> product_price}}" class="cart_product_price_{{$product -> product_id}}">
+                        <input type="hidden" value="1" class="cart_product_qty_{{$product -> product_id}}">
                         <a href="{{URL::to('chi-tiet-san-pham/'.$product -> product_id)}}">
                             <img src="{{URL::to('public/uploads/product/'.$product -> product_image)}}" style="width:255px;height:150px;" alt="product" />
                             <h2>{{$product -> product_name}}</h2>
                         </a>
                         <p>{{number_format($product -> product_price).' '.'VNĐ'}}</p>
-                        <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
+                        <button type="button" class="btn btn-default add-to-cart" data-id_product="{{$product -> product_id}}"> <i class="fa fa-shopping-cart"></i>Thêm giỏ hàng</button>
                     </form>
                 </div>
                 <!-- <div class="product-overlay">
