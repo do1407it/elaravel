@@ -62,8 +62,8 @@ class CartController extends Controller
             );
         }
         Session::put('cart', $cart);
-        Session::save();
-        print_r($data);
+        Session::save();    
+      
     }
     public function save_cart(Request $request)
     {

@@ -29,7 +29,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/formvalidation/0.6.2-dev/js/formValidation.min.js">
+    <!-- This is what you need -->
     <link rel="stylesheet" href="https://lipis.github.io/bootstrap-sweetalert/dist/sweetalert.css">
+    <link rel="stylesheet" href="dist/sweetalert.css">
+    <!--.......................-->
     <link href="{{asset('public/fontend/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/fontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/fontend/css/prettyPhoto.css')}}" rel="stylesheet">
@@ -618,8 +621,10 @@
     <script src="{{asset('public/fontend/js/price-range.js')}}"></script>
     <script src="{{asset('public/fontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/fontend/js/main.js')}}"></script>
+    <script src="{{asset('public/fontend/js/sweetalert.js')}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
+
     <script type="text/javascript">
         $(document).ready(function() {
             $('.add-to-cart').click(function() {
@@ -642,11 +647,24 @@
                         _token: _token
                     },
                     success: function(data) {
-                        alert(data);
                         console.log(data);
+
+                        swal({
+                                title: "Đã thêm sản phẩm vào giỏ hàng",
+                                text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
+                                showCancelButton: true,
+                                cancelButtonText: "Xem tiếp",
+                                confirmButtonClass: "btn-success",
+                                confirmButtonText: "Đi đến giỏ hàng",
+                                closeOnConfirm: false,
+                            },
+                            function() {
+                                window.location.href = "{{url('/gio-hang')}}";
+                            });
+
                     }
                 })
-                
+
             })
         })
     </script>
