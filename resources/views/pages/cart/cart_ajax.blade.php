@@ -9,79 +9,103 @@
                 <li class="active">Giỏ hàng của bạn</li>
             </ol>
         </div>
+        <?php
+        //Lấy message
+        $message = Session::get('message');
+
+        if ($message) {
+            echo '<span class="text-alert">' . $message . '</span>';
+            Session::put('message', null);
+        }
+        ?>
         <div class="table-responsive cart_info">
-            <table class="table table-condensed">
-                <thead>
-                    <tr class="cart_menu">
-                        <td class="image">Hình ảnh</td>
-                        <td class="description">Mô tả</td>
-                        <td class="price">Giá</td>
-                        <td class="qty">Số lượng</td>
-                        <td class="total">Tổng tiền</td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @php 
-                    dump(Session::get('cart'));
-                    @endphp
-                    <tr>
-                        <td class="cart_product">
-                            <a href=""><img src="" style="width:110px;height:110px;" alt=""></a>
-                        </td>
-                        <td class="cart_description">
-                            <h4><a href=""></a></h4>
-                            <p>Sản phẩm ID: </p>
-                        </td>
-                        <td class="cart_price">
-                            <p> </p>
-                        </td>
-                        <td class="cart_quantity">
-                            <div class="cart_quantity_button">
-                                <form action="" method="POST">
-                                    <input class="cart_quantity_input" type="number" name="cart_quantity" value="" size="2" style="width:60px;" min="1">
-                                    <input type="hidden" value="" name="rowId_cart" class="btn btn-default btn-sm">
-                                    <input type="submit" value="Cập nhật" name="update_qty" class="btn btn-default btn-sm" style="margin-left:12px;">
-                                </form>
-                            </div>
-                        </td>
-                        <td class="cart_total">
-                            <p class="cart_total_price"></p>
-                        </td>
-                        <td class="cart_delete">
-                            <a class="cart_quantity_delete" onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" href=""><i class="fa fa-times"></i></a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <form action="{{url('/update-sp')}}" method="POST">
+                {{csrf_field()}}
+                <table class="table table-condensed">
+                    <thead>
+                        <tr class="cart_menu">
+                            <td class="image">Hình ảnh</td>
+                            <td class="description">Sản phẩm</td>
+                            <td class="price">Giá</td>
+                            <td class="qty">Số lượng</td>
+                            <td class="total">Tổng tiền</td>
+                            <td></td>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if(Session::get('cart')==true)
+                        @php
+                        dump(Session::get('cart'));
+                        $total = 0;
+                        @endphp
+                        @foreach(Session::get('cart') as $key => $value)
+                        @php
+                        $subtotal = $value['product_price'] * $value['product_qty'];
+                        $total += $subtotal;
+                        @endphp
+
+                        <tr>
+                            <td class="cart_product">
+                                <a href=""><img src="{{asset('public/uploads/product/'.$value['product_image'])}}" style="width:110px;height:110px;" alt=""></a>
+                            </td>
+                            <td class="cart_description">
+                                <h4><a href=""></a></h4>
+                                <p>Sản phẩm ID: {{$value['product_id']}} </p>
+                                <p>Tên sản phẩm: <span style="color:red">{{$value['product_name']}}</span></p>
+                            </td>
+                            <td class="cart_price">
+                                <p>{{number_format($value['product_price']).' vnđ'}}</p>
+                            </td>
+                            <td class="cart_quantity">
+                                <div class="cart_quantity_button">
+
+                                    <input class="cart_quantity" type="number" name="cart_quantity[{{$value['session_id']}}]" value="{{$value['product_qty']}}" size="2" style="width:60px;" min="1">
+
+                                </div>
+                            </td>
+                            <td class="cart_total">
+                                <p class="cart_total_price">
+                                    {{number_format($subtotal).' '.'vnđ'}}
+                                </p>
+                            </td>
+                            <td class="cart_delete">
+                                <a class="cart_quantity_delete" onclick="return confirm('Bạn có chắc là muốn xóa sản phẩm này không?')" href="{{URL::to('/delete-sp/'.$value['session_id'])}}"><i class="fa fa-times"></i></a>
+                            </td>
+                        </tr>
+                        @endforeach
+                        <tr>
+                            <td><input type="submit" value="Cập nhật" name="update" class="btn btn-default btn-sm" style="margin-left:12px;"></td>
+                            <td> <a class="btn btn-default check_out" style="margin:0;" href="{{URL::to('/delete-all')}}">Xoá tất cả</a></td>
+                            <td>
+                                <li>Tạm tím
+                                    <span>{{number_format($total).' '.'vnđ'}}</span>
+                                </li>
+                                <li>Thuế<span></span></li>
+                                <li>Phí vận chuyển <span>Free</span></li>
+                                <li>Tổng tiền<span></span></li>
+                                <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
+                                <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Voucher giảm giá</a>
+                            </td>
+                        </tr>
+                        <tr>
+                        </tr>
+                        @else
+                        <tr>
+                            <td>
+                                @php
+                                echo 'Chưa có sản phẩm nào được thêm vào giỏ hàng';
+                                @endphp
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </form>
         </div>
     </div>
 </section>
 <!--/#cart_items-->
 
-<section id="do_action">
-    <div class="container">
-        <div class="heading">
-            <h3>Thanh toán</h3>
-        </div>
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="total_area">
-                    <ul>
-                        <li>Tạm tím<span></span></li>
-                        <li>Thuế<span></span></li>
-                        <li>Phí vận chuyển <span>Free</span></li>
-                        <li>Tổng tiền<span></span></li>
-                        <!-- total (tổng = thuế + tạm tính) -->
-                    </ul>
-                    <!-- <a class="btn btn-default update" href="">Update</a> -->
-                    <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
-                    <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Thanh toán</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<!--/#do_action-->
 
 @endsection

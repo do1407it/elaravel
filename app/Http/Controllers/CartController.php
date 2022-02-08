@@ -26,10 +26,10 @@ class CartController extends Controller
         return view('pages.cart.cart_ajax')->with('category', $cate_product)->with('brand', $brand_product)
             ->with('meta_des', $meta_des)->with('meta_keywords', $meta_keywords)->with('meta_title', $meta_title)->with('url_canonical', $url_canonical);
     }
+
     public function add_cart_ajax(Request $request)
     {
         $data = $request->all();
-
         $session_id = substr(md5(microtime()), rand(0, 26), 5);
         $cart = Session::get('cart');
         if ($cart == true) {
@@ -58,13 +58,65 @@ class CartController extends Controller
                 'product_image' =>  $data['cart_product_image'],
                 'product_qty'   =>  $data['cart_product_qty'],
                 'product_price' =>  $data['cart_product_price'],
-
             );
         }
         Session::put('cart', $cart);
-        Session::save();    
-      
+        Session::save();
     }
+
+    public function delete_sp($session_id)
+    {
+        $cart = Session::get('cart');
+        if ($cart == true) {
+            foreach ($cart as $key => $value) {
+                if ($value['session_id'] == $session_id) {
+                    unset($cart[$key]);
+                }
+            }
+            Session::put('message', 'Xoá sản phẩm thành công');
+            Session::put('cart', $cart);
+            return Redirect::to('gio-hang');
+        } else {
+            Session::put('message', 'Xoá sản phẩm thất bại');
+            return Redirect::to('gio-hang');
+        }
+    }
+
+    public function delete_all()
+    {
+        $cart = Session::get('cart');
+        if ($cart == true) {
+            Session::forget('cart');
+            Session::put('message', 'Xoá tất cả sản phẩm thành công');
+            return Redirect::to('gio-hang');
+        } else {
+            Session::put('message', 'Xoá tất cả sản phẩm thất bại');
+            return Redirect::to('gio-hang');
+        }
+    }
+
+    public function update_sp(Request $request)
+    {
+        $data = $request->all();
+        $cart = Session::get('cart');
+
+        if ($cart == true) {
+            foreach ($data['cart_quantity'] as $key => $qty) {
+                foreach ($cart as $session => $value) {
+                    if ($value['session_id'] == $key) {
+                        $cart[$session]['product_qty'] = $qty;
+                    }
+                }
+            }
+            Session::put('cart', $cart);
+            Session::put('message', 'Cập nhật sản phẩm thành công');
+            return Redirect::to('gio-hang');
+        } else {
+            Session::put('message', 'Cập nhật sản phẩm thất bạis');
+            return Redirect::to('gio-hang');
+        }
+    }
+
     public function save_cart(Request $request)
     {
         $productId = $request->productid_hidden;

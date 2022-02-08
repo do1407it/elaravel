@@ -72,13 +72,16 @@ Route::post('/save-product', [ProductController::class, 'save_product']);
 Route::post('/update-product/{product_id}', [ProductController::class, 'update_product']);
 
 //Cart
+Route::get('/show-cart', [CartController::class, 'show_cart']);
 Route::post('/save-cart', [CartController::class, 'save_cart']);
-Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);
+Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart']);
 Route::post('/update-cart-quantity', [CartController::class, 'update_cart_quantity']);
 
-Route::get('/show-cart', [CartController::class, 'show_cart']);
-Route::get('/gio-hang', [CartController::class, 'gio_hang']);
-Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart']);
+Route::get('/gio-hang', [CartController::class, 'gio_hang']); //cart ajax
+Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);//add ajax
+Route::get('/delete-sp/{session_id}', [CartController::class, 'delete_sp']); //delete ajax
+Route::get('/delete-all', [CartController::class, 'delete_all']); //delete ajax
+Route::post('/update-sp', [CartController::class, 'update_sp']); //update ajax
 
 // CHECKOUT
 Route::get('/login-checkout', [CheckoutController::class, 'login_checkout']);  // dẫn đến form đăng nhập hoặc đăng ký
@@ -99,23 +102,9 @@ Route::get('/view-order/{orderId}', [CheckoutController::class, 'view_order']);
 Route::get('/delete-order/{orderId}', [CheckoutController::class, 'delete_order']);
 
 //Login facebook
-Route::get('/login-facebook',[AdminController::class, 'login_facebook']);
-Route::get('/admin/callback',[AdminController::class, 'callback_facebook']);
+Route::get('/login-facebook', [AdminController::class, 'login_facebook']);
+Route::get('/admin/callback', [AdminController::class, 'callback_facebook']);
 
 //Login  google
-Route::get('/login-google',[AdminController::class, 'login_google']);
-Route::get('/google/callback',[AdminController::class, 'callback_google']);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Route::get('/login-google', [AdminController::class, 'login_google']);
+Route::get('/google/callback', [AdminController::class, 'callback_google']);
