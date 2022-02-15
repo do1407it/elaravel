@@ -84,8 +84,7 @@
                                 <li>Thuế<span></span></li>
                                 <li>Phí vận chuyển <span>Free</span></li>
                                 <li>Tổng tiền<span></span></li>
-                                <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
-                                <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Voucher giảm giá</a>
+
                             </td>
                         </tr>
                         <tr>
@@ -102,6 +101,14 @@
                     </tbody>
                 </table>
             </form>
+
+            <td>
+                <form action="{{url('/check-coupon')}}" method="POST" enctype="">
+                {{csrf_field()}}
+                    <input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá">
+                    <input type="submit" class="btn btn-default check_out" style="margin:0;" name="check_coupon" value="Tính mã giảm giá" placeholder="Nhập mã giảm giá">
+                </form>
+            </td>
         </div>
     </div>
 </section>

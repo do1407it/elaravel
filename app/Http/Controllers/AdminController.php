@@ -21,13 +21,10 @@ session_start();
 class AdminController extends Controller
 {
     // GET API FACEBOOK
-    public function login_facebook()
-    {
-        return Socialite::driver('facebook')->redirect();
-    }
+    public function login_facebook(){
+        return Socialite::driver('facebook')->redirect();}
 
-    public function callback_facebook()
-    {
+    public function callback_facebook(){
         $provider = Socialite::driver('facebook')->user();
         $account = Social::where('provider', 'facebook')->where('provider_user_id', $provider->getId())->first();
         if ($account) {
@@ -60,16 +57,12 @@ class AdminController extends Controller
             Session::put('admin_name', $account_name->admin_name);
             Session::put('admin_id', $account_name->admin_id);
         }
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
-    }
+        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');}
 
     // GET GOOGLE API
-    public function login_google()
-    {
-        return Socialite::driver('google')->redirect();
-    }
-    public function callback_google()
-    {
+    public function login_google(){
+        return Socialite::driver('google')->redirect();}
+    public function callback_google(){
         $users = Socialite::driver('google')->stateless()->user();
         // return $users->id;
         // return $users->name;
@@ -86,10 +79,8 @@ class AdminController extends Controller
             Session::put('login_normal', true);
             Session::put('admin_id', $account_name->admin_id);
         }
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
-    }
-    public function findOrCreateUser($users, $provider)
-    {
+        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');}
+    public function findOrCreateUser($users, $provider){
         $authUser = Social::where('provider_user_id', $users->id)->first();
         if ($authUser) {
 
@@ -113,8 +104,7 @@ class AdminController extends Controller
             $customer_new->login()->associate($orang);
             $customer_new->save();
             return $customer_new;
-        }
-    }
+        }}
 
     //Check login 
     public function AuthLogin()

@@ -144,11 +144,13 @@ class BrandProduct extends Controller
         $brand_name = DB::table('tbl_brand')->where('brand_id', $brand_id)->limit(1)->get();
         $brand_by_id = DB::table('tbl_product')
             ->join('tbl_brand', 'tbl_product.brand_id', '=', 'tbl_brand.brand_id')
+            ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
             ->where('product_status', '1')
+            ->where('category_status', '1')
             ->where('brand_status', '1')
             ->where('tbl_product.brand_id', $brand_id)->get();
         foreach ($brand_seo as $key => $val) {
-            // SEO
+            // SEO  đã từng nông nỗi đã từng nông cạn bao nhiêu tấm thấu kính mới hiểu được những gì không nói đã nói là phải làm 
             $meta_des      =  $val->brand_desc;
             $meta_keywords =  $val->meta_keywords;
             $meta_title    =  $val->brand_name;

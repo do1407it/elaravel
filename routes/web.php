@@ -82,6 +82,8 @@ Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);//add aj
 Route::get('/delete-sp/{session_id}', [CartController::class, 'delete_sp']); //delete ajax
 Route::get('/delete-all', [CartController::class, 'delete_all']); //delete ajax
 Route::post('/update-sp', [CartController::class, 'update_sp']); //update ajax
+Route::post('/check-coupon', [CartController::class, 'check_coupon']); //update ajax
+
 
 // CHECKOUT
 Route::get('/login-checkout', [CheckoutController::class, 'login_checkout']);  // dẫn đến form đăng nhập hoặc đăng ký
