@@ -8,6 +8,7 @@ use App\Http\Controllers\BrandProduct;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\CouponController;
 
 /*|--------------------------------------------------------------------------|*/
 
@@ -78,12 +79,17 @@ Route::get('/delete-to-cart/{rowId}', [CartController::class, 'delete_to_cart'])
 Route::post('/update-cart-quantity', [CartController::class, 'update_cart_quantity']);
 
 Route::get('/gio-hang', [CartController::class, 'gio_hang']); //cart ajax
-Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']);//add ajax
+Route::post('/add-cart-ajax', [CartController::class, 'add_cart_ajax']); //add ajax
 Route::get('/delete-sp/{session_id}', [CartController::class, 'delete_sp']); //delete ajax
 Route::get('/delete-all', [CartController::class, 'delete_all']); //delete ajax
 Route::post('/update-sp', [CartController::class, 'update_sp']); //update ajax
-Route::post('/check-coupon', [CartController::class, 'check_coupon']); //update ajax
 
+// COUPON (mã giảm giá)
+Route::post('/check-coupon', [CouponController::class, 'check_coupon']);
+Route::get('/insert-coupon', [CouponController::class, 'insert_coupon']);
+Route::post('/save-coupon', [CouponController::class, 'save_coupon']);
+Route::get('/all-coupon', [CouponController::class, 'all_coupon']);
+Route::get('/delete-coupon/{coupon_id}', [CouponController::class, 'delete_coupon']);
 
 // CHECKOUT
 Route::get('/login-checkout', [CheckoutController::class, 'login_checkout']);  // dẫn đến form đăng nhập hoặc đăng ký

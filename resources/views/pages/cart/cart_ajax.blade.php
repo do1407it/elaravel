@@ -104,7 +104,7 @@
 
             <td>
                 <form action="{{url('/check-coupon')}}" method="POST" enctype="">
-                {{csrf_field()}}
+                    {{csrf_field()}}
                     <input type="text" class="form-control" name="coupon" placeholder="Nhập mã giảm giá">
                     <input type="submit" class="btn btn-default check_out" style="margin:0;" name="check_coupon" value="Tính mã giảm giá" placeholder="Nhập mã giảm giá">
                 </form>

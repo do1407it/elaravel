@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // use DB;
 use Illuminate\Support\Facades\Session; // use Session;
 use App\Models\Category;
-
-use App\Http\Requests;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 
@@ -110,7 +108,6 @@ class CategoryProduct extends Controller
     public function delete_category_product($category_product_id)
     {
         $this->AuthLogin();
-        $product_id  = DB::table('tbl_product')->get();
         Category::where('category_id', $category_product_id)->delete();
         Session::put('message', 'Xóa danh mục sản phẩm thành công');
         return Redirect::to('all-category-product');

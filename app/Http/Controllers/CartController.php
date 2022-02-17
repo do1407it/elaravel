@@ -15,10 +15,7 @@ session_start();
 
 class CartController extends Controller
 {
-    public function check_coupon(Request $request){
-        $data = $request->all();
-        dd($data);
-    }
+    
     public function gio_hang(Request $request)
     {
         $cate_product  = DB::table('tbl_category_product')->where('category_status', '1')->orderBy('category_id', 'desc')->get();
