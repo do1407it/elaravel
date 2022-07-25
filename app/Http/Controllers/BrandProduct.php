@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // use DB;
 use Illuminate\Support\Facades\Session; // use Session;
 use App\Models\Brand;
-use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 
@@ -16,7 +15,7 @@ class BrandProduct extends Controller
 {
     public function AuthLogin()
     {
-        if (Session::get('login_normal')) {
+        if (Session::get('login_normal') || Session::get('admin_id')) {
             $admin_id = Session::get('admin_id');
         } else {
             $admin_id = Auth::id();
@@ -60,7 +59,7 @@ class BrandProduct extends Controller
         // Cách 2:
         $data = $request->all();
         $brand = new Brand(); //Dùng creat save
-        // // CỘT SQL      = name="" trong add_brand_product.blade
+        // CỘT SQL      = name="" trong add_brand_product.blade
         $brand->brand_name    = $data['brand_product_name'];
         $brand->meta_keywords = $data['brand_product_keywords'];
         $brand->brand_desc    = $data['brand_product_desc'];
@@ -68,6 +67,7 @@ class BrandProduct extends Controller
         $brand->save();
 
         Session::put('message', 'Thêm thương hiệu thành công');
+
         return Redirect::to('add-brand-product');
     }
     // [GET]
@@ -138,11 +138,11 @@ class BrandProduct extends Controller
 
     public function show_brand_home(Request $request, $brand_id)
     {
-        $cate_product  = DB::table('tbl_category_product')->where('category_status', '1')->orderBy('category_id', 'desc')->get();
-        $brand_product = DB::table('tbl_brand')->where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
-        $brand_seo  = DB::table('tbl_brand')->get();
-        $brand_name = DB::table('tbl_brand')->where('brand_id', $brand_id)->limit(1)->get();
-        $brand_by_id = DB::table('tbl_product')
+        $cate_product   = DB::table('tbl_category_product')->where('category_status', '1')->orderBy('category_id', 'desc')->get();
+        $brand_product  = DB::table('tbl_brand')->where('brand_status', '1')->orderBy('brand_id', 'desc')->get();
+        $brand_seo      = DB::table('tbl_brand')->get();
+        $brand_name     = DB::table('tbl_brand')->where('brand_id', $brand_id)->limit(1)->get();
+        $brand_by_id    = DB::table('tbl_product')
             ->join('tbl_brand', 'tbl_product.brand_id', '=', 'tbl_brand.brand_id')
             ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
             ->where('product_status', '1')

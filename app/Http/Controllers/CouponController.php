@@ -6,18 +6,28 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB; // use DB;
 use Illuminate\Support\Facades\Session; // use Session;
 use Illuminate\Support\Facades\Redirect;
-
-session_start();
-
 use App\Models\Coupon;
 
 
 class CouponController extends Controller
 {
+    public function unset_coupon()
+    {
+        $coupon = Session::get('coupon');
+        if ($coupon == true) {
+            Session::forget('coupon');
+            Session::put('message', 'Xoá Mã giảm giá thành công');
+            return Redirect::to('gio-hang');
+        } else {
+            Session::put('message', 'Xoá Mã giảm giá thất bại');
+            return Redirect::to('gio-hang');
+        }
+    }
     public function check_coupon(Request $request)
     {
         $data = $request->all();
         $coupon = Coupon::where('coupon_code', $data['coupon'])->first();
+   
         if ($coupon) {
             $count_coupons = $coupon->count();
             if ($count_coupons > 0) {
@@ -31,8 +41,8 @@ class CouponController extends Controller
                             'coupon_number'    => $coupon->coupon_number,
                         );
                         Session::put('coupon', $cou);
-                    } 
-                }else {
+                    }
+                } else {
                     $cou[] = array(
                         'coupon_code'      => $coupon->coupon_code,
                         'coupon_condition' => $coupon->coupon_condition,
@@ -41,12 +51,11 @@ class CouponController extends Controller
                     Session::put('coupon', $cou);
                 }
                 Session::save();
-                // return Redirect::to('gio-hang')->with('message', 'Thêm mã giảm giá thành công');
+                return Redirect::to('gio-hang')->with('message', 'Thêm mã giảm giá thành công');
             }
         } else {
-            // return Redirect::to('gio-hang')->with('message', 'Thêm mã giảm giá Thất bại');
+            return Redirect::to('gio-hang')->with('message', 'Thêm mã giảm giá Thất bại');
         }
-        dump(Session::get('coupon'));
     }
 
     public function insert_coupon()
@@ -67,7 +76,6 @@ class CouponController extends Controller
         $all_coupon = Coupon::orderBy('coupon_id', 'DESC')->get(); //Cách model
         $manager_brand_product = view('admin.coupon.all_coupon')->with(compact('all_coupon'));
         return view('admin.coupon.all_coupon')->with(compact('manager_brand_product', 'all_coupon'));
-        dd($manager_brand_product, $all_coupon);
     }
 
     public function save_coupon(Request $request)

@@ -79,7 +79,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                             if (Session::get('login_normal')) {
                                 $name = Session::get('admin_name');
                             } else {
-                                $name = Auth::user()->admin_name;
+                                // $name = Auth::user()->admin_name;
+                                $name = Session::get('admin_name');
                             }
                             if ($name) {
                                 echo $name;
@@ -126,9 +127,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                                 <i class="fa-solid fa-scale-unbalanced-flip"></i>
                                 <span>Quản lý mã giảm giá</span>
                             </a>
-                            <ul class="sub">    
+                            <ul class="sub">
                                 <li><a href="{{URL::to('/insert-coupon')}}">Thêm mã giảm giá</a></li>
                                 <li><a href="{{URL::to('/all-coupon')}}">Liệt kê mã giảm giá</a></li>
+                            </ul>
+                        </li>
+                        <li class="sub-menu">
+                            <a href="javascript:;">
+                                <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                                <span>Vận chuyển</span>
+                            </a>
+                            <ul class="sub">
+                                <li><a href="{{URL::to('/delivery')}}">Quản lí vận chuyển</a></li>
                             </ul>
                         </li>
                         <li class="sub-menu">
@@ -296,12 +306,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
     <script type="text/javascript" src="{{asset('public/backend/js/monthly.js')}}"></script>
     <script type="text/javascript">
         $(window).load(function() {
-
             $('#mycalendar').monthly({
                 mode: 'event',
-
             });
-
             $('#mycalendar2').monthly({
                 mode: 'picker',
                 target: '#mytarget',
@@ -311,7 +318,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 stylePast: true,
                 disablePast: true
             });
-
             switch (window.location.protocol) {
                 case 'http:':
                 case 'https:':
@@ -320,21 +326,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 case 'file:':
                     alert('Just a heads-up, events will not work when run locally.');
             }
-
         });
     </script>
-    <!-- //calendar -->
-</body>
-<script>
-    $.validate({
-        lang: 'es'
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $('#myTable').DataTable();
-    });
-</script>
+    <script>
+        $(document).ready(function() {
+            $('#myTable').DataTable();
+        });
+    </script>
 
 
-</html>
+    </html>

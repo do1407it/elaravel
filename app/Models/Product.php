@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory;
-    use HasFactory;
     protected $table = 'tbl_product'; //tên table
 
     protected $timestamp = false; // set time null

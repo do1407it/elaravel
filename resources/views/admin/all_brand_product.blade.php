@@ -31,14 +31,14 @@
         </div> -->
         <div class="table-responsive">
             <?php
-                        //Lấy message
-                        $message =Session::get('message');
-                        
-                        if($message){
-                            echo '<span class="text-alert">'.$message.'</span>';
-                            Session::put('message',null);
-                        }
-                    ?>
+            //Lấy message
+            $message = Session::get('message');
+
+            if ($message) {
+                echo '<span class="text-alert">' . $message . '</span>';
+                Session::put('message', null);
+            }
+            ?>
             <table id="myTable" class="table table-striped b-t b-light">
                 <thead>
                     <tr>
@@ -60,15 +60,15 @@
                         <td>{{$values -> brand_name}}</td>
                         <td>
                             <?php
-                                if($values -> brand_status == 1){
+                            if ($values->brand_status == 1) {
                             ?>
-                            <a href="{{URL::to('/unactive-brand-product/'.$values->brand_id)}}"><span class="fa-thumb-styling fa fa-thumbs-up"></span></a>
+                                <a href="{{URL::to('/unactive-brand-product/'.$values->brand_id)}}"><span class="fa-thumb-styling fa fa-thumbs-up"></span></a>
                             <?php
-                                }else{
+                            } else {
                             ?>
-                            <a href="{{URL::to('/active-brand-product/'.$values->brand_id)}}"><span class="fa-thumb-styling fa fa-thumbs-down"></span></a>
+                                <a href="{{URL::to('/active-brand-product/'.$values->brand_id)}}"><span class="fa-thumb-styling fa fa-thumbs-down"></span></a>
                             <?php
-                                }
+                            }
                             ?>
                         </td>
 
@@ -106,8 +106,8 @@
     </div>
 </div>
 <script>
-$(document).ready(function() {
-    $('#myTable').DataTable();
-});
+    $(document).ready(function() {
+        $('#myTable').DataTable();
+    });
 </script>
 @endsection

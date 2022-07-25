@@ -15,7 +15,7 @@ class CategoryProduct extends Controller
 {
     public function AuthLogin()
     {
-        if (Session::get('login_normal')) {
+        if (Session::get('login_normal') || Session::get('admin_id')) {
             $admin_id = Session::get('admin_id');
         } else {
             $admin_id = Auth::id();
@@ -41,7 +41,7 @@ class CategoryProduct extends Controller
         $this->AuthLogin();
         $all_category_product       =   Category::get();
         $manager_category_product   =   view('admin.all_category_product')->with(compact('all_category_product'));
-        return view('admin-layout') ->  with(compact('manager_category_product'));
+        return view('admin-layout')->with(compact('manager_category_product'));
     }
     //[POST]
     public function save_category_product(Request $request)
@@ -86,7 +86,7 @@ class CategoryProduct extends Controller
 
         $manager_category_product   =  view('admin.edit_category_product')->with(compact('edit_category_product'));
 
-        return view('admin-layout') -> with(compact('manager_category_product'));
+        return view('admin-layout')->with(compact('manager_category_product'));
     }
 
     //[POST]

@@ -624,19 +624,76 @@
     <script src="{{asset('public/fontend/js/sweetalert.js')}}"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <!-- <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script> -->
-
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.send_order').click(function() {
+                swal({
+                    title: "Bạn có chắc chắn ?",
+                    // text: "You will not be able to recover this imaginary file!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Xác nhận mua hàng",
+                    cancelButtonText: "Không, cảm ơn",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                    },
+                    function(isConfirm) {
+                    if (isConfirm) {
+                        var shipping_email = $('.shipping_email').val();
+                        var shipping_name = $('.shipping_name').val();
+                        var shipping_address = $('.shipping_address').val();
+                        var shipping_phone = $('.shipping_phone').val();
+                        var shipping_notes = $('.shipping_notes').val();
+                        var shipping_method = $('.payment_select').val();
+                        var order_fee = $('.order_fee').val();
+                        var order_coupon = $('.order_coupon').val();
+                        var payment_select = $('.payment_select').val();
+                        var _token = $('input[name="_token"]').val();
+                        console.log(shipping_email,shipping_name,shipping_address,shipping_phone,shipping_notes,shipping_method,order_fee,order_coupon,_token);
+                        $.ajax({
+                            url: '{{url('/confirm-order')}}',
+                            method: 'POST',
+                            data: {
+                                shipping_email: shipping_email,
+                                shipping_name: shipping_name,
+                                shipping_address: shipping_address,
+                                shipping_phone: shipping_phone,
+                                shipping_notes: shipping_notes,
+                                shipping_method:shipping_method,
+                                order_fee:order_fee,
+                                order_coupon:order_coupon,
+                                payment_select:payment_select,
+                                _token: _token
+                            },
+                            success: function(data) {
+                                swal("Thành công!", "Bạn đã đặt hàng thành công", "success");
+                            },
+                        });
+                        console.log(data),
+                        window.setTimeout(function(){
+                            location.reload();
+                        },3000);
+                    } else {
+                        swal("Đóng", "Bạn đã đặt hàng thất bại", "error");
+                    }
+                });
+            })
+        })
+    </script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.add-to-cart').click(function() {
                 var id = $(this).data('id_product');
-                var cart_product_id    = $('.cart_product_id_' + id).val();
-                var cart_product_name  = $('.cart_product_name_' + id).val();
+                var cart_product_id = $('.cart_product_id_' + id).val();
+                var cart_product_name = $('.cart_product_name_' + id).val();
                 var cart_product_image = $('.cart_product_image_' + id).val();
                 var cart_product_price = $('.cart_product_price_' + id).val();
-                var cart_product_qty   = $('.cart_product_qty_' + id).val();
+                var cart_product_qty = $('.cart_product_qty_' + id).val();
                 var _token = $('input[name="_token"]').val();
+                console.log(cart_product_name)
                 $.ajax({
-                    url:'{{url('/add-cart-ajax')}}',
+                    url: '{{url('/add-cart-ajax')}}',
                     method: 'POST',
                     data: {
                         cart_product_id: cart_product_id,
@@ -647,8 +704,6 @@
                         _token: _token
                     },
                     success: function(data) {
-                        console.log(data);
-
                         swal({
                                 title: "Đã thêm sản phẩm vào giỏ hàng",
                                 text: "Bạn có thể mua hàng tiếp hoặc tới giỏ hàng để tiến hành thanh toán",
@@ -661,12 +716,80 @@
                             function() {
                                 window.location.href = "{{url('/gio-hang')}}";
                             });
-
+                            console.log(data);
                     }
                 })
-
             })
         })
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // function fetch_delivery() {
+            //     var _token = $('input[name="_token"]').val();
+            //     $.ajax({
+            //         url: '{{url(' / select -feeship ')}}',
+            //         method: 'post',
+            //         data: {
+            //             _token: _token
+            //         },
+            //         success: function(data) {
+            //             $('#load_delivery').html(data);
+            //         }
+
+            //     })
+            // }
+            // fetch_delivery();
+            $('.choose').on('change', function() {
+                var action = $(this).attr('id');
+                var ma_id = $(this).val();
+                var _token = $('input[name="_token"]').val();
+                var result = '';
+                if (action == 'city') {
+                    result = 'province';
+                } else {
+                    result = 'wards';
+                }
+                console.log(result)
+                $.ajax({
+                    url: '{{url('/select-delivery-home')}}',
+                    method: 'post',
+                    data: {
+                        action: action,
+                        ma_id: ma_id,
+                        _token: _token,
+                        
+                    },
+                    success: function(data) {
+                        $('#' + result).html(data);
+                        // console.log(data)
+                    }
+                })
+            });
+
+            $('.calculate_delivery').click(function() {
+                var city = $('.city').val();
+                var province = $('.province').val();
+                var wards = $('.wards').val();
+                var _token = $('input[name="_token"]').val();
+                if (city == '' && province == '' && wards == ''){
+                    alert('Điền đầy đủ phí vận chuyển');
+                } else {
+                    $.ajax({
+                    url: '{{url('/calculate-fee')}}',
+                    method: 'post',
+                    data: {
+                        city:city,
+                        province:province,
+                        wards:wards,
+                        _token:_token,
+                    },
+                    success: function(data) {
+                        location.reload();
+                    }
+                })
+                }
+            });
+        });
     </script>
     <div id="fb-root"></div>
 

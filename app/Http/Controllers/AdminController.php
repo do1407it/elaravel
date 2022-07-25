@@ -21,10 +21,13 @@ session_start();
 class AdminController extends Controller
 {
     // GET API FACEBOOK
-    public function login_facebook(){
-        return Socialite::driver('facebook')->redirect();}
+    public function login_facebook()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
 
-    public function callback_facebook(){
+    public function callback_facebook()
+    {
         $provider = Socialite::driver('facebook')->user();
         $account = Social::where('provider', 'facebook')->where('provider_user_id', $provider->getId())->first();
         if ($account) {
@@ -57,12 +60,16 @@ class AdminController extends Controller
             Session::put('admin_name', $account_name->admin_name);
             Session::put('admin_id', $account_name->admin_id);
         }
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');}
+        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+    }
 
     // GET GOOGLE API
-    public function login_google(){
-        return Socialite::driver('google')->redirect();}
-    public function callback_google(){
+    public function login_google()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+    public function callback_google()
+    {
         $users = Socialite::driver('google')->stateless()->user();
         // return $users->id;
         // return $users->name;
@@ -79,8 +86,10 @@ class AdminController extends Controller
             Session::put('login_normal', true);
             Session::put('admin_id', $account_name->admin_id);
         }
-        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');}
-    public function findOrCreateUser($users, $provider){
+        return redirect('/dashboard')->with('message', 'Đăng nhập Admin thành công');
+    }
+    public function findOrCreateUser($users, $provider)
+    {
         $authUser = Social::where('provider_user_id', $users->id)->first();
         if ($authUser) {
 
@@ -104,12 +113,13 @@ class AdminController extends Controller
             $customer_new->login()->associate($orang);
             $customer_new->save();
             return $customer_new;
-        }}
+        }
+    }
 
     //Check login 
     public function AuthLogin()
     {
-        if (Session::get('login_normal')) {
+        if (Session::get('login_normal') || Session::get('admin_id')) {
             $admin_id = Session::get('admin_id');
         } else {
             $admin_id = Auth::id();
@@ -122,9 +132,19 @@ class AdminController extends Controller
     }
 
     // [GET] /admin
-    public function index() 
+    public function index()
     {
-        return view('admin-login');
+        if (Session::get('login_normal') || Session::get('admin_id')) {
+            $admin_id = Session::get('admin_id');
+        } else {
+            $admin_id = Auth::id();
+        }
+        if ($admin_id) {
+            return Redirect::to('/dashboard');
+        } else {
+            return view('admin-login');
+        }
+        // return view('admin-login');
     }
     // [GET] /dashboard
     public function show()
@@ -141,38 +161,41 @@ class AdminController extends Controller
             'admin_password' => 'required',
             'g-recaptcha-response' => new Captcha(), //dòng kiểm tra Captcha
         ]);
-
         // $data = $request->all();
-        // $admin_email    = $data['admin_email'];
-        // $admin_password = md5($data['admin_password']);
-        // $login = Login::where('admin_email', $admin_email)->where('admin_password', $admin_password)->first();
-        // $login_count = $login->count();
-        // if ($login_count) {
-        //     Session::put('admin_name', $login->admin_name);
-        //     Session::put('admin_id', $login->admin_id);
+        $admin_email    = $data['admin_email'];
+        $admin_password = md5($data['admin_password']);
+        $login = Login::where('admin_email', $admin_email)->where('admin_password', $admin_password)->first();
+        if ($login) {
+            $login_count = $login->count();
+            if ($login_count >= 0) {
+                Session::put('admin_name', $login->admin_name);
+                Session::put('admin_id', $login->admin_id);
+                Session::put('message', 'Đăng nhập thành công');
+                return Redirect::to('/dashboard');
+                dump(Session::get('admin_id'));
+            }
+        } else {
+            Session::put('message', 'Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
+            return Redirect::to('/admin');
+        }
+
+
+
+        // $admin_email    =     $request->admin_email;
+        // $admin_password = md5($request->admin_password);
+        // // Lấy table tb_admin -> Kiểm tra email -> kiểm tra password -> Lấy giới hạn 1 user
+        // $result = DB::table('tbl_admin')->where('admin_email', $admin_email)->where('admin_password', $admin_password)->first();
+
+        // if ($result) {
+        //     Session::put('admin_name', $result->admin_name);
+        //     Session::put('admin_id', $result->admin_id);
         //     return Redirect::to('/dashboard');
         // } else {
         //     Session::put('message', 'Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
         //     return Redirect::to('/admin');
         // }
 
-        $admin_email    =     $request -> admin_email;
-        $admin_password = md5($request -> admin_password);
-        // Lấy table tb_admin -> Kiểm tra email -> kiểm tra password -> Lấy giới hạn 1 user
-        $result = DB::table('tbl_admin') -> where('admin_email', $admin_email) -> where('admin_password', $admin_password) -> first();
-        // echo '<pre>';
-        // print_r($result);    
-        // echo '</pre>';
-        if($result){
-            Session::put('admin_name', $result -> admin_name);
-            Session::put('admin_id', $result -> admin_id);
-            return Redirect::to('/dashboard');
-        }else{
-            Session::put('message','Mật khẩu hoặc tài khoản bị sai. Làm ơn nhập lại');
-            return Redirect::to('/admin');
-        }
-
-        return view('admin/dashboard');
+        // return view('admin/dashboard');
     }
 
     // [GET] /logout -> /admin
@@ -181,6 +204,7 @@ class AdminController extends Controller
         $this->AuthLogin();
         Session::put('admin_name', null);
         Session::put('admin_id', null);
+        Session::put('login_normal', null);
         return Redirect::to('/admin');
     }
 }

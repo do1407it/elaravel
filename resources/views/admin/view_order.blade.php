@@ -58,9 +58,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{{$order_by_id[0]->shipping_name}}</td>
-                        <td>{{$order_by_id[0]->shipping_address}}</td>
-                        <td>{{$order_by_id[0]->shipping_phone}}</td>
+                        <td>{{$order_details->shipping_name}}</td>
+                        <td>{{$order_details->shipping_address}}</td>
+                        <td>{{$order_details->shipping_phone}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -90,7 +90,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($order_by_id[0]->order_list as $order)
+                    @foreach($order_details->order_list as $order)
                     <tr>
                         <td><label class="i-checks m-b-none">
                                 <!-- <input type="checkbox" name="post[]"><i></i></label> -->

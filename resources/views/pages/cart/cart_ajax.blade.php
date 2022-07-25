@@ -77,13 +77,42 @@
                         <tr>
                             <td><input type="submit" value="Cập nhật" name="update" class="btn btn-default btn-sm" style="margin-left:12px;"></td>
                             <td> <a class="btn btn-default check_out" style="margin:0;" href="{{URL::to('/delete-all')}}">Xoá tất cả</a></td>
+                            @if(Session::get('coupon'))
+                            <td> <a class="btn btn-default check_out" style="margin:0;" href="{{URL::to('/unset-coupon')}}">Xoá mã khuyến mãi</a></td>
+                            @endif
                             <td>
-                                <li>Tạm tím
+                                <li>Tổng tiền:
                                     <span>{{number_format($total).' '.'vnđ'}}</span>
                                 </li>
-                                <li>Thuế<span></span></li>
-                                <li>Phí vận chuyển <span>Free</span></li>
-                                <li>Tổng tiền<span></span></li>
+                                <li>
+                                        @if(Session::get('coupon'))
+                                            @foreach(Session::get('coupon') as $key => $value)
+                                                @if($value['coupon_condition']==1)
+                                                   Mã Giảm: {{$value['coupon_number']}}%
+                                                   <p>
+                                                       @php
+                                                        $total_coupon = ($total * $value['coupon_number'])/100;
+                                                        echo '<li>Tổng giảm: '.number_format($total_coupon).' '.'vnđ'.'</li>';
+                                                       @endphp
+                                                   </p>
+                                                   <p><li>Tổng tiền đã giảm: {{number_format($total - $total_coupon).' '.'vnđ'}}</li></p>
+                                                @elseif($value['coupon_condition']==2)
+                                                <p>
+                                                    Mã Giảm: {{$value['coupon_number']}} vnđ
+                                                    @php
+                                                    $total_coupon = $value['coupon_number'];
+                                                    echo '<li>Tổng giảm: '.number_format($total_coupon).' '.'vnđ'.'</li>';
+                                                    @endphp
+                                                </p>
+                                                <p><li>Tổng tiền đã giảm: {{number_format($total-$total_coupon).' '.'vnđ'}}</li></p>
+                                                @endif
+                                            @endforeach
+                                            
+                                        @endif
+                                </li>
+                                <!-- <li>Thuế<span></span></li>
+                                <li>Phí vận chuyển <span>Free</span></li> -->
+                                <!-- <li>Tổng tiền<span></span></li> -->
 
                             </td>
                         </tr>
@@ -101,7 +130,7 @@
                     </tbody>
                 </table>
             </form>
-
+            @if(Session::get('cart'))
             <td>
                 <form action="{{url('/check-coupon')}}" method="POST" enctype="">
                     {{csrf_field()}}
@@ -109,6 +138,7 @@
                     <input type="submit" class="btn btn-default check_out" style="margin:0;" name="check_coupon" value="Tính mã giảm giá" placeholder="Nhập mã giảm giá">
                 </form>
             </td>
+            @endif
         </div>
     </div>
 </section>

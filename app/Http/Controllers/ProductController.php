@@ -18,7 +18,7 @@ class ProductController extends Controller
 {
     public function AuthLogin()
     {
-        if (Session::get('login_normal')) {
+        if (Session::get('login_normal') || Session::get('admin_id')) {
             $admin_id = Session::get('admin_id');
         } else {
             $admin_id = Auth::id();
@@ -53,7 +53,7 @@ class ProductController extends Controller
     //[POST]
     public function save_product(Request $request)
     {
-        $this -> AuthLogin();
+        $this->AuthLogin();
         $data = array();
         $data['product_name']    = $request->product_name;
         $data['product_price']   = $request->product_price;
@@ -65,22 +65,21 @@ class ProductController extends Controller
         $data['product_image']   = $request->product_image;
         $get_image = $request->file('product_image');
 
-        if($get_image){
-            $get_name_image = $get_image-> getClientOriginalName(); //getClientOriginalName() -> Lấy name của file
-            $name_image     = current(explode('.',$get_name_image)); //Do.jpg lấy Do bỏ jpg
-            $new_image      =  $name_image.rand(0,99).'.'.$get_image->getClientOriginalExtension(); //getClientOriginalExtension() -> Lấy đuôi file JPG,PNG,JPEG
-            $get_image -> move('public/uploads/product',$new_image);
+        if ($get_image) {
+            $get_name_image = $get_image->getClientOriginalName(); //getClientOriginalName() -> Lấy name của file
+            $name_image     = current(explode('.', $get_name_image)); //Do.jpg lấy Do bỏ jpg
+            $new_image      =  $name_image . rand(0, 99) . '.' . $get_image->getClientOriginalExtension(); //getClientOriginalExtension() -> Lấy đuôi file JPG,PNG,JPEG
+            $get_image->move('public/uploads/product', $new_image);
             $data['product_image'] = $new_image;
             Product::insert($data);
-            Session::put('message','Thêm sản phẩm thành công');
+            Session::put('message', 'Thêm sản phẩm thành công');
             return Redirect::to('add-product');
         }
 
         $data['product_image'] = '';
         Product::insert($data);
-        Session::put('message','Thêm sản phẩm thành công');
+        Session::put('message', 'Thêm sản phẩm thành công');
         return Redirect::to('add-product');
-
     }
     // [GET]
     public function unactive_product($product_id)

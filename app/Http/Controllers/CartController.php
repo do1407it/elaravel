@@ -15,7 +15,7 @@ session_start();
 
 class CartController extends Controller
 {
-    
+
     public function gio_hang(Request $request)
     {
         $cate_product  = DB::table('tbl_category_product')->where('category_status', '1')->orderBy('category_id', 'desc')->get();
@@ -33,6 +33,7 @@ class CartController extends Controller
         $data = $request->all();
         $session_id = substr(md5(microtime()), rand(0, 26), 5);
         $cart = Session::get('cart');
+        dd($data);
         if ($cart == true) {
             $is_avaiable = 0;
             foreach ($cart as $key => $value) {
@@ -61,6 +62,7 @@ class CartController extends Controller
                 'product_price' =>  $data['cart_product_price'],
             );
         }
+        dump($cart);
         Session::put('cart', $cart);
         Session::save();
     }
@@ -88,6 +90,7 @@ class CartController extends Controller
         $cart = Session::get('cart');
         if ($cart == true) {
             Session::forget('cart');
+            Session::forget('coupon');
             Session::put('message', 'Xoá tất cả sản phẩm thành công');
             return Redirect::to('gio-hang');
         } else {

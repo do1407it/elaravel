@@ -20,4 +20,9 @@ class Category extends Model
         'category_desc',
         'category_status'
     ]; //Cột SQL
+
+    public function product()
+    {
+        return $this->hasMany(Product::class, 'product_id', 'category_id');
+    }
 }
